@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: goal-game
-    runtime: node
-    buildCommand: npm install
-    startCommand: npm start
