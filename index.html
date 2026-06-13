@@ -1,52 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Goal Challenge</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wormcup - Penalty Shootout</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="top">
+  <div class="app">
 
-<h2>Goal Challenge ⚽</h2>
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="logo">
+        <span class="logo-w">WORM</span><span class="logo-cup">CUP</span>
+      </div>
+      <div class="shots-counter" id="shotsCounter">0 / 7</div>
+    </div>
 
-<p id="score">
-Goals : 0 / 7
-</p>
+    <!-- Stadium scene -->
+    <div class="stadium">
+      <div class="crowd"></div>
+      <div class="field">
+        <div class="goal-area">
+          <div class="goal-post">
+            <div class="net"></div>
+            <div class="zone" data-zone="top-left"></div>
+            <div class="zone" data-zone="top-center"></div>
+            <div class="zone" data-zone="top-right"></div>
+            <div class="zone" data-zone="bottom-left"></div>
+            <div class="zone" data-zone="bottom-center"></div>
+            <div class="zone" data-zone="bottom-right"></div>
 
-</div>
+            <!-- Goalkeeper -->
+            <div class="keeper" id="keeper">
+              <div class="keeper-body">
+                <div class="keeper-head"></div>
+                <div class="keeper-torso"></div>
+                <div class="keeper-arm-left"></div>
+                <div class="keeper-arm-right"></div>
+                <div class="keeper-leg-left"></div>
+                <div class="keeper-leg-right"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div id="ground">
+        <!-- Ball -->
+        <div class="ball-wrap">
+          <div class="ball" id="ball">
+            <div class="ball-pattern"></div>
+          </div>
+          <div class="ball-shadow" id="ballShadow"></div>
+        </div>
 
-<div id="goal"></div>
+        <!-- Result flash -->
+        <div class="result-flash" id="resultFlash"></div>
+      </div>
+    </div>
 
-<div id="keeper"></div>
+    <!-- Reward info -->
+    <div class="reward-bar">
+      <div class="reward-info">
+        <span class="reward-label">Earned</span>
+        <span class="reward-amount" id="earnedAmount">0.000000</span>
+      </div>
+      <div class="reward-info">
+        <span class="reward-label">Per Goal</span>
+        <span class="reward-amount" id="perShotAmount">0.000000</span>
+      </div>
+    </div>
 
-<div id="ball"></div>
+    <!-- Shot history dots -->
+    <div class="history" id="history"></div>
 
-</div>
+    <!-- Aim panel -->
+    <div class="aim-panel">
+      <div class="aim-title">Tap a zone to shoot</div>
+      <div class="aim-grid" id="aimGrid">
+        <button class="aim-btn" data-dir="top-left">↖</button>
+        <button class="aim-btn" data-dir="top-center">↑</button>
+        <button class="aim-btn" data-dir="top-right">↗</button>
+        <button class="aim-btn" data-dir="bottom-left">↙</button>
+        <button class="aim-btn" data-dir="bottom-center">↓</button>
+        <button class="aim-btn" data-dir="bottom-right">↘</button>
+      </div>
+    </div>
 
-<button id="shootBtn">
-SHOOT
-</button>
+    <!-- Claim button -->
+    <button class="claim-btn" id="claimBtn" disabled>
+      <span id="claimBtnText">Complete all shots</span>
+    </button>
 
-<div id="finish" style="display:none;">
+    <!-- Status message -->
+    <div class="status-msg" id="statusMsg"></div>
 
-<h2>Game Finished</h2>
+  </div>
 
-<p id="rewardText"></p>
+  <!-- Loading overlay -->
+  <div class="overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="overlay-text">Loading game...</div>
+  </div>
 
-<button onclick="claimReward()">
-Claim Reward
-</button>
+  <!-- Success overlay -->
+  <div class="overlay hidden" id="successOverlay">
+    <div class="success-card">
+      <div class="trophy-icon">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4z" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 5H4a1 1 0 00-1 1v2a3 3 0 003 3M17 5h3a1 1 0 011 1v2a3 3 0 01-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title">Reward Claimed!</div>
+      <div class="success-amount" id="successAmount">0.000000</div>
+      <div class="success-sub">Added to your bot balance</div>
+      <button class="success-close" id="successClose">Close</button>
+    </div>
+  </div>
 
-</div>
+  <!-- Error overlay -->
+  <div class="overlay hidden" id="errorOverlay">
+    <div class="success-card">
+      <div class="error-icon">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round"/>
+          <path d="M12 8v5M12 16h.01" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="success-title" id="errorTitle">Error</div>
+      <div class="success-sub" id="errorMsg">Something went wrong</div>
+    </div>
+  </div>
 
-<script src="game.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
